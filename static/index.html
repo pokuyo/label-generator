@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>라벨 생성기 · 섹시밤</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div>
+        <h1>라벨 생성기</h1>
+        <p class="subtitle">시트에 라벨을 추가하고, 필요한 항목만 선택해 .ai / .png로 내보냅니다.</p>
+      </div>
+      <div class="meta" id="sheetMeta">0 / 200</div>
+    </header>
+
+    <nav id="brandTabs" class="brand-tabs" aria-label="브랜드 선택"></nav>
+
+    <section class="panel">
+      <h2>라벨 추가</h2>
+      <form id="addForm" class="form-grid">
+        <label>
+          상품코드
+          <input type="text" id="code" placeholder="S01" required maxlength="20" />
+        </label>
+        <label>
+          상품명
+          <input type="text" id="name" placeholder="베이스코트" required maxlength="30" />
+        </label>
+        <label>
+          식별번호 (EAN-13)
+          <input type="text" id="barcode" placeholder="8809213697951" required maxlength="13" pattern="[0-9]{13}" />
+        </label>
+        <button type="submit" class="btn primary">시트에 추가</button>
+      </form>
+      <p class="hint">예시: S01 · 베이스코트 · 8809213697951</p>
+      <div id="formError" class="error" hidden></div>
+    </section>
+
+    <section class="panel">
+      <div class="toolbar">
+      <h2 id="catalogPanelTitle">AI 파일 항목</h2>
+        <div class="toolbar-actions">
+          <button type="button" id="refreshCatalogBtn" class="btn ghost">AI 재추출</button>
+          <button type="button" id="selectAllCatalogBtn" class="btn ghost">전체 선택</button>
+          <button type="button" id="importCatalogBtn" class="btn primary" disabled>선택 항목 시트에 추가</button>
+        </div>
+      </div>
+      <p class="hint" id="catalogHint">`.ai` / `.png`에서 OCR로 추출한 목록입니다. <strong>사용 가능</strong> 항목은 시트 미리보기에 자동 배치됩니다.</p>
+      <div id="catalogMeta" class="catalog-meta">불러오는 중...</div>
+      <div id="catalogList" class="catalog-list"></div>
+    </section>
+
+    <section class="panel">
+      <div class="toolbar">
+        <h2 id="sheetPanelTitle">시트 미리보기</h2>
+        <div class="toolbar-actions">
+          <button type="button" id="selectAllBtn" class="btn ghost">전체 선택</button>
+          <button type="button" id="clearSelectBtn" class="btn ghost">선택 해제</button>
+          <button type="button" id="clearSheetBtn" class="btn danger ghost">시트 비우기</button>
+        </div>
+      </div>
+
+      <div id="sheetGrid" class="sheet-grid"></div>
+      <p class="selection-info"><span id="selectedCount">0</span>개 선택됨</p>
+    </section>
+
+    <section class="panel export-panel">
+      <h2>내보내기</h2>
+      <div class="export-options">
+        <label class="radio-card">
+          <input type="radio" name="exportMode" value="individual" checked />
+          <div>
+            <strong>개별 파일</strong>
+            <span>선택 항목마다 .ai + .png (ZIP)</span>
+          </div>
+        </label>
+        <label class="radio-card">
+          <input type="radio" name="exportMode" value="sheet" />
+          <div>
+            <strong>시트 파일</strong>
+            <span>선택 항목만 배치한 시트 .ai + .png (ZIP)</span>
+          </div>
+        </label>
+      </div>
+      <button type="button" id="exportBtn" class="btn primary large" disabled>
+        선택 항목 내보내기
+      </button>
+    </section>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <div id="previewModal" class="preview-modal" hidden aria-hidden="true">
+    <div class="preview-modal-backdrop" data-close-preview></div>
+    <div class="preview-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="previewModalTitle">
+      <button type="button" class="preview-modal-close" data-close-preview aria-label="닫기">×</button>
+      <div class="preview-modal-header">
+        <h3 id="previewModalTitle"></h3>
+        <p id="previewModalMeta"></p>
+      </div>
+      <div class="preview-modal-body">
+        <img id="previewModalImage" alt="" />
+      </div>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

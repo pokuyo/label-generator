@@ -1,0 +1,1242 @@
+[
+  {
+    "code": "S01",
+    "name": "베이스코트",
+    "barcode": "8809213697951",
+    "row": 0,
+    "col": 0,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S02",
+    "name": "탑코트",
+    "barcode": "8809213697968",
+    "row": 0,
+    "col": 1,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S03",
+    "name": "손톱강화제",
+    "barcode": "8809213697975",
+    "row": 0,
+    "col": 2,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S04",
+    "name": "큐티클오일",
+    "barcode": "8809213697982",
+    "row": 0,
+    "col": 3,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S05",
+    "name": "크리스탈",
+    "barcode": "8809213697999",
+    "row": 0,
+    "col": 4,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S06",
+    "name": "필오프베이스",
+    "barcode": "8809363313251",
+    "row": 0,
+    "col": 5,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S11",
+    "name": "메탈릭실버",
+    "barcode": "8809213697654",
+    "row": 1,
+    "col": 0,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S12",
+    "name": "브릴란트실버",
+    "barcode": "8809213697661",
+    "row": 1,
+    "col": 1,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S13",
+    "name": "클레오골드",
+    "barcode": "8809213697678",
+    "row": 1,
+    "col": 2,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S14",
+    "name": "사이너레모네이드",
+    "barcode": "8809213697685",
+    "row": 1,
+    "col": 3,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S21",
+    "name": "그린골드카멜",
+    "barcode": "8809213697692",
+    "row": 2,
+    "col": 0,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S22",
+    "name": "브론즈카멜",
+    "barcode": "8809213697708",
+    "row": 2,
+    "col": 1,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S23",
+    "name": "핑크베이지카멜",
+    "barcode": "8809213697715",
+    "row": 2,
+    "col": 2,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S24",
+    "name": "바이올렛카멜",
+    "barcode": "8809213697722",
+    "row": 2,
+    "col": 3,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S25",
+    "name": "실켓로즈",
+    "barcode": "8809213698576",
+    "row": 2,
+    "col": 4,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S31",
+    "name": "오팔핑크쉘",
+    "barcode": "8809213697739",
+    "row": 3,
+    "col": 0,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S32",
+    "name": "브릴란트핑크",
+    "barcode": "8809213697746",
+    "row": 3,
+    "col": 1,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S33",
+    "name": "사이니스킨",
+    "barcode": "8809213697753",
+    "row": 3,
+    "col": 2,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S34",
+    "name": "사이니핑크",
+    "barcode": "8809213697760",
+    "row": 3,
+    "col": 3,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S35",
+    "name": "딜리셔스핑크",
+    "barcode": "8809213697777",
+    "row": 3,
+    "col": 4,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S36",
+    "name": "허니핑크",
+    "barcode": "8809213697784",
+    "row": 3,
+    "col": 5,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S37",
+    "name": "사이니핫핑크",
+    "barcode": "8809213697791",
+    "row": 3,
+    "col": 6,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S38",
+    "name": "에프리코트블라썸",
+    "barcode": "8809213697807",
+    "row": 3,
+    "col": 7,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S39",
+    "name": "사이니오렌지",
+    "barcode": "8809213697814",
+    "row": 3,
+    "col": 8,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S40",
+    "name": "핑크큐빅오렌지",
+    "barcode": "8809213697821",
+    "row": 4,
+    "col": 0,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S41",
+    "name": "메이플카멜",
+    "barcode": "8809213698002",
+    "row": 4,
+    "col": 1,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S42",
+    "name": "핑크피치",
+    "barcode": "8809213698569",
+    "row": 4,
+    "col": 2,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S51",
+    "name": "큐빅리얼레드",
+    "barcode": "8809213697838",
+    "row": 5,
+    "col": 0,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S52",
+    "name": "레드템테이션",
+    "barcode": "8809213697845",
+    "row": 5,
+    "col": 1,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S53",
+    "name": "사이니핑크올렛",
+    "barcode": "8809213697852",
+    "row": 5,
+    "col": 2,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S54",
+    "name": "사이니바이올렛",
+    "barcode": "8809213697869",
+    "row": 5,
+    "col": 3,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S55",
+    "name": "레디쉬카멜",
+    "barcode": "8809213698453",
+    "row": 5,
+    "col": 4,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S56",
+    "name": "흑장미",
+    "barcode": "8809363310809",
+    "row": 5,
+    "col": 5,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S61",
+    "name": "사이니스카이",
+    "barcode": "8809363310847",
+    "row": 6,
+    "col": 0,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S62",
+    "name": "사이니딥블루",
+    "barcode": "8809213697883",
+    "row": 6,
+    "col": 1,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S63",
+    "name": "사이니애플",
+    "barcode": "8809213697890",
+    "row": 6,
+    "col": 2,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S64",
+    "name": "사이니그라스",
+    "barcode": "8809213697906",
+    "row": 6,
+    "col": 3,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S65",
+    "name": "스파블루카멜",
+    "barcode": "8809213697913",
+    "row": 6,
+    "col": 4,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S66",
+    "name": "카키스무디카멜",
+    "barcode": "8809213697920",
+    "row": 6,
+    "col": 5,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S67",
+    "name": "딥그린카멜",
+    "barcode": "8809213698460",
+    "row": 6,
+    "col": 6,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S68",
+    "name": "코발트블루",
+    "barcode": "8809213698477",
+    "row": 6,
+    "col": 7,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S71",
+    "name": "스칼릿그린나이트",
+    "barcode": "8809213697937",
+    "row": 7,
+    "col": 0,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S72",
+    "name": "스칼릿다크바이올렛",
+    "barcode": "8809213697944",
+    "row": 7,
+    "col": 1,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S81",
+    "name": "골드체스트",
+    "barcode": "8809213698484",
+    "row": 8,
+    "col": 0,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S82",
+    "name": "쉬크골드",
+    "barcode": "8809363310731",
+    "row": 8,
+    "col": 1,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S83",
+    "name": "럭셔리차콜",
+    "barcode": "8809363310748",
+    "row": 8,
+    "col": 2,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S84",
+    "name": "매직블루",
+    "barcode": "8809363310755",
+    "row": 8,
+    "col": 3,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S85",
+    "name": "매직로즈",
+    "barcode": "8809363310762",
+    "row": 8,
+    "col": 4,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S86",
+    "name": "드림라이크펄",
+    "barcode": "8809363310779",
+    "row": 8,
+    "col": 5,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S87",
+    "name": "애프리코트",
+    "barcode": "8809363310786",
+    "row": 8,
+    "col": 6,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S88",
+    "name": "바닐라슈크림",
+    "barcode": "8809363310793",
+    "row": 8,
+    "col": 7,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S89",
+    "name": "레이크블루",
+    "barcode": "8809363310816",
+    "row": 8,
+    "col": 8,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S91",
+    "name": "블루베리",
+    "barcode": "8809363310175",
+    "row": 9,
+    "col": 0,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S92",
+    "name": "로맨틱베이지",
+    "barcode": "8809363310182",
+    "row": 9,
+    "col": 1,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S93",
+    "name": "라즈베리",
+    "barcode": "8809363310199",
+    "row": 9,
+    "col": 2,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S94",
+    "name": "트윙클믹스",
+    "barcode": "8809363310700",
+    "row": 9,
+    "col": 3,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S95",
+    "name": "크리스마스",
+    "barcode": "8809363310717",
+    "row": 9,
+    "col": 4,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S96",
+    "name": "히든엣지",
+    "barcode": "8809363310724",
+    "row": 9,
+    "col": 5,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S97",
+    "name": "후르츠블라썸",
+    "barcode": "8809363311165",
+    "row": 9,
+    "col": 6,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S98",
+    "name": "트윙클스타",
+    "barcode": "8809363311172",
+    "row": 9,
+    "col": 7,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S99",
+    "name": "러브하트",
+    "barcode": "8809363311189",
+    "row": 9,
+    "col": 8,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S100",
+    "name": "레인보우펄",
+    "barcode": "8809363311202",
+    "row": 10,
+    "col": 0,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S101",
+    "name": "실버글레이즈",
+    "barcode": "8809363311257",
+    "row": 10,
+    "col": 1,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S102",
+    "name": "쥬시봉봉",
+    "barcode": "8809363311264",
+    "row": 10,
+    "col": 2,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S103",
+    "name": "도저펄블루",
+    "barcode": "8809363311424",
+    "row": 10,
+    "col": 3,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S104",
+    "name": "퍼츠샤핑크",
+    "barcode": "8809363311417",
+    "row": 10,
+    "col": 4,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S105",
+    "name": "블루파피아",
+    "barcode": "8809363311530",
+    "row": 10,
+    "col": 5,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S106",
+    "name": "골드피쉬",
+    "barcode": "8809363311547",
+    "row": 10,
+    "col": 6,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S107",
+    "name": "핑크파피아",
+    "barcode": "8809363311554",
+    "row": 10,
+    "col": 7,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S108",
+    "name": "스위트캔디",
+    "barcode": "8809363311561",
+    "row": 10,
+    "col": 8,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S109",
+    "name": "파이어스파크",
+    "barcode": "8809363311523",
+    "row": 10,
+    "col": 9,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S110",
+    "name": "크림슨레드",
+    "barcode": "8809363311837",
+    "row": 11,
+    "col": 0,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S111",
+    "name": "미디움퍼플",
+    "barcode": "8809363311844",
+    "row": 11,
+    "col": 1,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S112",
+    "name": "포레스트그린",
+    "barcode": "8809363311851",
+    "row": 11,
+    "col": 2,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S113",
+    "name": "선라이즈",
+    "barcode": "8809363312797",
+    "row": 11,
+    "col": 3,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S114",
+    "name": "자몽에이드",
+    "barcode": "8809363312803",
+    "row": 11,
+    "col": 4,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S115",
+    "name": "래디언트오키드",
+    "barcode": "8809363312810",
+    "row": 11,
+    "col": 5,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S116",
+    "name": "브라운골드",
+    "barcode": "8809363313565",
+    "row": 11,
+    "col": 6,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S117",
+    "name": "루비버건디",
+    "barcode": "8809363313572",
+    "row": 11,
+    "col": 7,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S118",
+    "name": "캔디레드",
+    "barcode": "8809363314142",
+    "row": 11,
+    "col": 8,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S119",
+    "name": "라즈베리핑크",
+    "barcode": "8809363314159",
+    "row": 11,
+    "col": 9,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S120",
+    "name": "글램브론즈",
+    "barcode": "8809363314678",
+    "row": 12,
+    "col": 0,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S121",
+    "name": "라벤더핑크",
+    "barcode": "8809363314685",
+    "row": 12,
+    "col": 1,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S122",
+    "name": "프렌치골드",
+    "barcode": "8809363314692",
+    "row": 12,
+    "col": 2,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S123",
+    "name": "스노우카라",
+    "barcode": "8809363315156",
+    "row": 12,
+    "col": 3,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S124",
+    "name": "차콜브라운",
+    "barcode": "8809363315903",
+    "row": 12,
+    "col": 4,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S125",
+    "name": "시크그레이",
+    "barcode": "8809363315910",
+    "row": 12,
+    "col": 5,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S126",
+    "name": "돌핀그레이",
+    "barcode": "8809363315927",
+    "row": 12,
+    "col": 6,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S127",
+    "name": "나이트그레이",
+    "barcode": "8809363315934",
+    "row": 12,
+    "col": 7,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S128",
+    "name": "스키니핑크",
+    "barcode": "8809363315941",
+    "row": 12,
+    "col": 8,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S129",
+    "name": "러브핑크",
+    "barcode": "8809363315958",
+    "row": 12,
+    "col": 9,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S130",
+    "name": "머스트핑크",
+    "barcode": "8809363315965",
+    "row": 13,
+    "col": 0,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S131",
+    "name": "썬비체레드",
+    "barcode": "8809363315972",
+    "row": 13,
+    "col": 1,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S132",
+    "name": "플라밍고핑크",
+    "barcode": "8809363315989",
+    "row": 13,
+    "col": 2,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S133",
+    "name": "롤링핑크",
+    "barcode": "8809363315996",
+    "row": 13,
+    "col": 3,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S135",
+    "name": "슈가피치펀치",
+    "barcode": "8809363316009",
+    "row": 13,
+    "col": 5,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S136",
+    "name": "스윗애프리콧",
+    "barcode": "8809363316016",
+    "row": 13,
+    "col": 6,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S137",
+    "name": "하와이안블루",
+    "barcode": "8809363316023",
+    "row": 13,
+    "col": 7,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S138",
+    "name": "마린블루",
+    "barcode": "8809363316030",
+    "row": 13,
+    "col": 8,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S139",
+    "name": "코발트블루",
+    "barcode": "8809363316047",
+    "row": 13,
+    "col": 9,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S140",
+    "name": "사이니블루",
+    "barcode": "8809363316054",
+    "row": 14,
+    "col": 0,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S141",
+    "name": "다크오션",
+    "barcode": "8809363316061",
+    "row": 14,
+    "col": 1,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S142",
+    "name": "스프링그린",
+    "barcode": "8809363316078",
+    "row": 14,
+    "col": 2,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S143",
+    "name": "몬스테라그린",
+    "barcode": "8809363316085",
+    "row": 14,
+    "col": 3,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S144",
+    "name": "스키니누드",
+    "barcode": "8809363315897",
+    "row": 14,
+    "col": 4,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S145",
+    "name": "벚꽃핑크",
+    "barcode": "8809363316092",
+    "row": 14,
+    "col": 5,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S146",
+    "name": "러블리핑크",
+    "barcode": "8809363316108",
+    "row": 14,
+    "col": 6,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S147",
+    "name": "웨딩핑크",
+    "barcode": "8809363316115",
+    "row": 14,
+    "col": 7,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S148",
+    "name": "우아핑크",
+    "barcode": "8809363316122",
+    "row": 14,
+    "col": 8,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S149",
+    "name": "달콤자몽",
+    "barcode": "8809363316139",
+    "row": 14,
+    "col": 9,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S150",
+    "name": "다홍레드",
+    "barcode": "8809363316146",
+    "row": 15,
+    "col": 0,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S151",
+    "name": "레드벨벳",
+    "barcode": "8809363316153",
+    "row": 15,
+    "col": 1,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S152",
+    "name": "동백아가씨",
+    "barcode": "8809363316160",
+    "row": 15,
+    "col": 2,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S153",
+    "name": "폴인러브",
+    "barcode": "8809363316177",
+    "row": 15,
+    "col": 3,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S154",
+    "name": "베리쥬스",
+    "barcode": "8809363316184",
+    "row": 15,
+    "col": 4,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S155",
+    "name": "신비레드",
+    "barcode": "8809363316191",
+    "row": 15,
+    "col": 5,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S156",
+    "name": "와인레드",
+    "barcode": "8809363316207",
+    "row": 15,
+    "col": 6,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S157",
+    "name": "레드비트",
+    "barcode": "8809363316214",
+    "row": 15,
+    "col": 7,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S158",
+    "name": "아이스실버",
+    "barcode": "8809363316221",
+    "row": 15,
+    "col": 8,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S159",
+    "name": "이집트골드",
+    "barcode": "8809363316238",
+    "row": 15,
+    "col": 9,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S160",
+    "name": "샴페인골드",
+    "barcode": "8809363316245",
+    "row": 16,
+    "col": 0,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S161",
+    "name": "러블리라일락",
+    "barcode": "8809363316252",
+    "row": 16,
+    "col": 1,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S162",
+    "name": "민트사랑",
+    "barcode": "8809363316269",
+    "row": 16,
+    "col": 2,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S163",
+    "name": "블루스카이",
+    "barcode": "8809363316276",
+    "row": 16,
+    "col": 3,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "S164",
+    "name": "퍼플러브",
+    "barcode": "8809363316283",
+    "row": 16,
+    "col": 4,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SB01",
+    "name": "밀키민트",
+    "barcode": "8809213698538",
+    "row": 17,
+    "col": 0,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SB02",
+    "name": "블루진",
+    "barcode": "8809213698545",
+    "row": 17,
+    "col": 1,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SB03",
+    "name": "클린화이트",
+    "barcode": "8809213699627",
+    "row": 17,
+    "col": 2,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SB04",
+    "name": "나이트블랙",
+    "barcode": "8809213699634",
+    "row": 17,
+    "col": 3,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SB05",
+    "name": "레드빈브라운",
+    "barcode": "8809363313558",
+    "row": 17,
+    "col": 4,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SB06",
+    "name": "마린블루",
+    "barcode": "8809363314135",
+    "row": 17,
+    "col": 5,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SG01",
+    "name": "애플슬러시",
+    "barcode": "8809213698514",
+    "row": 18,
+    "col": 0,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SG02",
+    "name": "스위티라임",
+    "barcode": "8809213698521",
+    "row": 18,
+    "col": 1,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SG03",
+    "name": "옐로우칙",
+    "barcode": "8809213699573",
+    "row": 18,
+    "col": 2,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SM01",
+    "name": "매직핑크",
+    "barcode": "8809213699641",
+    "row": 19,
+    "col": 0,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SM02",
+    "name": "매직골드",
+    "barcode": "8809213699658",
+    "row": 19,
+    "col": 1,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SM03",
+    "name": "매직퍼플",
+    "barcode": "8809213699665",
+    "row": 19,
+    "col": 2,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SM04",
+    "name": "매직스카이",
+    "barcode": "8809213699672",
+    "row": 19,
+    "col": 3,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SM05",
+    "name": "매직홀릭",
+    "barcode": "8809213699689",
+    "row": 19,
+    "col": 4,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SM06",
+    "name": "매직브라운",
+    "barcode": "8809363310823",
+    "row": 19,
+    "col": 5,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SM07",
+    "name": "매직그린",
+    "barcode": "8809363310830",
+    "row": 19,
+    "col": 6,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SM08",
+    "name": "실버빔",
+    "barcode": "8809363311400",
+    "row": 19,
+    "col": 7,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SM09",
+    "name": "글루미골드",
+    "barcode": "8809363312148",
+    "row": 19,
+    "col": 8,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SM10",
+    "name": "글램골드",
+    "barcode": "8809363312155",
+    "row": 19,
+    "col": 9,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SP01",
+    "name": "젤리핑크",
+    "barcode": "8809213698491",
+    "row": 20,
+    "col": 0,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SP02",
+    "name": "샤벳오렌지",
+    "barcode": "8809213698507",
+    "row": 20,
+    "col": 1,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SV01",
+    "name": "밀크라벤더",
+    "barcode": "8809213698552",
+    "row": 21,
+    "col": 0,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SV02",
+    "name": "밀크핑크",
+    "barcode": "8809213698583",
+    "row": 21,
+    "col": 1,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SV03",
+    "name": "밀크스카이",
+    "barcode": "8809213699580",
+    "row": 21,
+    "col": 2,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SV04",
+    "name": "밀크퍼플",
+    "barcode": "8809213699597",
+    "row": 21,
+    "col": 3,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SV05",
+    "name": "밀크민트",
+    "barcode": "8809213699610",
+    "row": 21,
+    "col": 4,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SMT01",
+    "name": "매트베이지",
+    "barcode": "8809363315163",
+    "row": 22,
+    "col": 0,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SMT02",
+    "name": "매트버건디",
+    "barcode": "8809363315170",
+    "row": 22,
+    "col": 1,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SMT03",
+    "name": "매트퍼플",
+    "barcode": "8809363315187",
+    "row": 22,
+    "col": 2,
+    "source": "섹시밤.ai"
+  },
+  {
+    "code": "SMT04",
+    "name": "매트로즈",
+    "barcode": "8809363315194",
+    "row": 22,
+    "col": 3,
+    "source": "섹시밤.ai"
+  }
+]
