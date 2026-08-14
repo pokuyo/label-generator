@@ -24,8 +24,25 @@ echo.
 echo Running PyInstaller... (may take several minutes)
 
 REM Stop running exe so dist folder is not locked
+echo Closing LabelGenerator if running...
 taskkill /F /IM LabelGenerator.exe >nul 2>&1
-timeout /t 2 /nobreak >nul
+timeout /t 3 /nobreak >nul
+
+REM Remove old dist output (PyInstaller fails if files are locked)
+if exist "dist\LabelGenerator" (
+  echo Removing old dist\LabelGenerator ...
+  rmdir /s /q "dist\LabelGenerator" 2>nul
+  timeout /t 2 /nobreak >nul
+)
+if exist "dist\LabelGenerator" (
+  echo.
+  echo ERROR: dist\LabelGenerator is locked.
+  echo - Close LabelGenerator.exe and this folder in File Explorer
+  echo - Pause OneDrive sync if the project is in OneDrive
+  echo - Then run build_windows.bat again
+  pause
+  exit /b 1
+)
 
 pyinstaller label-generator.spec --noconfirm
 if errorlevel 1 (
