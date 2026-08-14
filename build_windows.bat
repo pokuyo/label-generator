@@ -1,14 +1,13 @@
 @echo off
-chcp 65001 >nul
 cd /d "%~dp0"
 
 echo ========================================
-echo  라벨 생성기 Windows 패키지 빌드
+echo  Label Generator - Windows Build
 echo ========================================
 
 where python >nul 2>&1
 if errorlevel 1 (
-  echo Python 3.11+ 가 필요합니다.
+  echo Python 3.11+ is required.
   pause
   exit /b 1
 )
@@ -22,22 +21,29 @@ python -m pip install -U pip
 pip install -r requirements.txt -r requirements-build.txt
 
 echo.
-echo PyInstaller 빌드 중... (수 분 소요)
+echo Running PyInstaller... (may take several minutes)
+
+REM Stop running exe so dist folder is not locked
+taskkill /F /IM LabelGenerator.exe >nul 2>&1
+timeout /t 2 /nobreak >nul
+
 pyinstaller label-generator.spec --noconfirm
 if errorlevel 1 (
-  echo 빌드 실패
+  echo Build failed.
   pause
   exit /b 1
 )
 
 if not exist "dist\LabelGenerator\assets" mkdir "dist\LabelGenerator\assets"
+copy /Y run_label_generator.bat dist\LabelGenerator\ >nul
 
 echo.
 echo ========================================
-echo  완료: dist\LabelGenerator\
-echo  실행: dist\LabelGenerator\LabelGenerator.exe
+echo  Done: dist\LabelGenerator\
+echo  Run:   dist\LabelGenerator\run_label_generator.bat
+echo         (or LabelGenerator.exe)
 echo.
-echo  브랜드 원본 파일(.ai / .png)은 exe 옆 assets\ 폴더에 넣으세요.
-echo  예) assets\섹시밤.png, assets\칼라디움.png ...
+echo  Put brand source files (.ai / .png) in assets\ next to the exe.
+echo  e.g. assets\sexybam.png, assets\coloridium.png ...
 echo ========================================
 pause

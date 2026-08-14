@@ -96,7 +96,7 @@ function openPreviewModal(item) {
   previewModalTitle.textContent = `${item.code} ${item.name}`;
   previewModalMeta.textContent = `EAN-13: ${item.barcode} · ${item.row + 1}행 ${item.col + 1}열 · ${currentBrandInfo().label}`;
   previewModalBody.classList.add("is-loading");
-  previewModalImage.src = `/api/labels/${item.id}/preview?size=large&brand=${activeBrand}&t=${Date.now()}`;
+  previewModalImage.src = `/api/labels/${item.id}/preview?size=large&brand=${activeBrand}`;
   previewModalImage.onload = () => previewModalBody.classList.remove("is-loading");
 }
 
@@ -302,7 +302,9 @@ function renderSheet() {
 
       const img = document.createElement("img");
       img.alt = `${item.code} ${item.name}`;
-      img.src = `/api/labels/${item.id}/preview?brand=${activeBrand}&t=${Date.now()}`;
+      img.loading = "lazy";
+      img.decoding = "async";
+      img.src = `/api/labels/${item.id}/preview?brand=${activeBrand}`;
       cell.appendChild(img);
 
       const overlay = document.createElement("div");

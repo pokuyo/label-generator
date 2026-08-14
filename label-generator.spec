@@ -15,6 +15,11 @@ for catalog in (root / "data").glob("catalog_*.json"):
     datas.append((str(catalog), "data"))
 
 hiddenimports = [
+    "app",
+    "brands",
+    "ai_parser",
+    "label_engine",
+    "paths",
     "uvicorn.logging",
     "uvicorn.loops",
     "uvicorn.loops.auto",

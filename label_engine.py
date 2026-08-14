@@ -6,11 +6,13 @@ import io
 import math
 import re
 import zipfile
+from contextlib import contextmanager, nullcontext
 from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
 import pymupdf
+from pymupdf import mupdf
 from PIL import Image
 
 from brands import DEFAULT_BRAND_ID, get_brand
@@ -411,6 +413,92 @@ def barcode_pattern_matches_png(
 FONT_LIGHT_OBJ = pymupdf.Font(fontfile=str(FONT_LIGHT))
 FONT_BOLD_OBJ = pymupdf.Font(fontfile=str(FONT_BOLD))
 
+# .ai 내보내기: 텍스트를 벡터 패스(아웃라인)로 변환 — Illustrator Create Outlines.
+_outline_text = False
+
+
+@contextmanager
+def _text_as_outlines():
+    global _outline_text
+    prev = _outline_text
+    _outline_text = True
+    try:
+        yield
+    finally:
+        _outline_text = prev
+
+
+class _GlyphPathWalker(mupdf.FzPathWalker2):
+    # fz_outline_glyph 경로는 PDF 좌표 — Shape.ipctm 변환 없이 그대로 기록.
+
+    def __init__(self, shape: pymupdf.Shape) -> None:
+        super().__init__()
+        self.shape = shape
+        self.use_virtual_moveto()
+        self.use_virtual_lineto()
+        self.use_virtual_curveto()
+        self.use_virtual_closepath()
+
+    def _fmt(self, point: pymupdf.Point) -> str:
+        return pymupdf._format_g(pymupdf.JM_TUPLE(point))
+
+    def moveto(self, ctx, x, y) -> None:
+        point = pymupdf.Point(x, y)
+        if self.shape.last_point != point:
+            self.shape.draw_cont += self._fmt(point) + " m\n"
+            self.shape.last_point = point
+
+    def lineto(self, ctx, x, y) -> None:
+        point = pymupdf.Point(x, y)
+        self.shape.draw_cont += self._fmt(point) + " l\n"
+        self.shape.last_point = point
+        self.shape.updateRect(point)
+
+    def curveto(self, ctx, x1, y1, x2, y2, x3, y3) -> None:
+        p1 = pymupdf.Point(x1, y1)
+        p2 = pymupdf.Point(x2, y2)
+        p3 = pymupdf.Point(x3, y3)
+        args = pymupdf.JM_TUPLE(list(p1) + list(p2) + list(p3))
+        self.shape.draw_cont += pymupdf._format_g(args) + " c\n"
+        self.shape.last_point = p3
+        self.shape.updateRect(p1)
+        self.shape.updateRect(p2)
+        self.shape.updateRect(p3)
+
+    def closepath(self, ctx) -> None:
+        self.shape.draw_cont += "h\n"
+
+
+def _text_writer_point(page: pymupdf.Page, point: pymupdf.Point) -> pymupdf.Point:
+    # TextWriter.append() 와 동일한 좌표계로 변환 (상하 반전 방지).
+    ictm = ~pymupdf.Matrix(1, 0, 0, -1, 0, page.rect.height)
+    return point * ictm
+
+
+def _insert_text_outlined(
+    page: pymupdf.Page,
+    point: pymupdf.Point,
+    text: str,
+    font: pymupdf.Font,
+    fontsize: float,
+) -> None:
+    if not text:
+        return
+    shape = page.new_shape()
+    p = _text_writer_point(page, point)
+    x, y = p.x, p.y
+    for ch in text:
+        cp = ord(ch)
+        gid, fzfont = mupdf.fz_encode_character_with_fallback(font.this, cp, 0, 0)
+        trm = mupdf.fz_make_matrix(fontsize, 0, 0, fontsize, x, y)
+        path = mupdf.fz_outline_glyph(fzfont, gid, trm)
+        walker = _GlyphPathWalker(shape)
+        mupdf.fz_walk_path(path, walker, walker.m_internal)
+        x += font.glyph_advance(cp) * fontsize
+    # 채우기만 적용 (width=0). color+fill 동시 지정 시 외곽선이 두꺼워짐.
+    shape.finish(fill=BLACK, width=0, even_odd=True, closePath=False)
+    shape.commit()
+
 
 def _text_width(text: str, font: pymupdf.Font, fontsize: float) -> float:
     # 주어진 폰트·크기에서 텍스트 가로 폭(pt).
@@ -433,6 +521,9 @@ def _fit_font_size(
 
 def _insert_text(page: pymupdf.Page, point: pymupdf.Point, text: str, font: pymupdf.Font, fontsize: float) -> None:
     # PDF 페이지에 단일 텍스트 span 삽입.
+    if _outline_text:
+        _insert_text_outlined(page, point, text, font, fontsize)
+        return
     tw = pymupdf.TextWriter(page.rect, color=BLACK)
     tw.append(point, text, font=font, fontsize=fontsize)
     tw.write_text(page)
@@ -760,24 +851,35 @@ def _new_page(size: tuple[float, float]) -> tuple[pymupdf.Document, pymupdf.Page
     return doc, page
 
 
-def render_label_pdf(code: str, name: str, ean13: str, *, brand: str = DEFAULT_BRAND_ID) -> bytes:
+def render_label_pdf(
+    code: str,
+    name: str,
+    ean13: str,
+    *,
+    brand: str = DEFAULT_BRAND_ID,
+    outline_text: bool = False,
+) -> bytes:
     # 단일 라벨 PDF bytes (.ai 호환).
     layout = _layout_for(brand)
     export_size = _export_size(layout)
     doc, page = _new_page((export_size, export_size))
-    draw_label(page, LABEL_EXPORT_MARGIN, LABEL_EXPORT_MARGIN, code, name, ean13, standalone=True, brand=brand)
+    ctx = _text_as_outlines() if outline_text else nullcontext()
+    with ctx:
+        draw_label(page, LABEL_EXPORT_MARGIN, LABEL_EXPORT_MARGIN, code, name, ean13, standalone=True, brand=brand)
     pdf = doc.tobytes()
     doc.close()
     return pdf
 
 
-def render_sheet_pdf(items: list[LabelItem]) -> bytes:
+def render_sheet_pdf(items: list[LabelItem], *, outline_text: bool = False) -> bytes:
     # 선택 라벨을 10×20 시트 PDF로 렌더.
     doc, page = _new_page((SHEET_W_PT, SHEET_H_PT))
-    for item in items:
-        x = item.col * LABEL_W_PT
-        y = item.row * LABEL_H_PT
-        draw_label(page, x, y, item.code, item.name, item.barcode, brand=item.brand)
+    ctx = _text_as_outlines() if outline_text else nullcontext()
+    with ctx:
+        for item in items:
+            x = item.col * LABEL_W_PT
+            y = item.row * LABEL_H_PT
+            draw_label(page, x, y, item.code, item.name, item.barcode, brand=item.brand)
     pdf = doc.tobytes()
     doc.close()
     return pdf
@@ -800,13 +902,15 @@ def render_label_png(code: str, name: str, ean13: str, dpi: int = 300, *, brand:
 
 
 def render_preview_thumbnail(code: str, name: str, ean13: str, *, brand: str = DEFAULT_BRAND_ID) -> bytes:
-    # 웹 UI 썸네일용 작은 PNG (~120px).
-    png = render_label_png(code, name, ean13, dpi=150, brand=brand)
-    img = Image.open(io.BytesIO(png))
-    img = img.resize((120, int(120 * img.height / img.width)), Image.Resampling.LANCZOS)
-    out = io.BytesIO()
-    img.save(out, format="PNG")
-    return out.getvalue()
+    # 웹 UI 썸네일용 작은 PNG (~120px). 필요한 해상도만 렌더링.
+    doc = pymupdf.open(stream=render_label_pdf(code, name, ean13, brand=brand), filetype="pdf")
+    page = doc[0]
+    target_w = 120
+    zoom = target_w / page.rect.width
+    pix = page.get_pixmap(matrix=pymupdf.Matrix(zoom, zoom), alpha=False)
+    data = pix.tobytes("png")
+    doc.close()
+    return data
 
 
 def render_sheet_preview_png(items: list[LabelItem], dpi: int = 120) -> bytes:
@@ -819,7 +923,7 @@ def export_selected_zip(items: list[LabelItem]) -> bytes:
     with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as zf:
         for item in items:
             base = f"{item.code}_{item.name}"
-            pdf = render_label_pdf(item.code, item.name, item.barcode, brand=item.brand)
+            pdf = render_label_pdf(item.code, item.name, item.barcode, brand=item.brand, outline_text=True)
             png = pdf_to_png(pdf, dpi=600)
             zf.writestr(f"{base}.ai", pdf)
             zf.writestr(f"{base}.png", png)
@@ -830,7 +934,7 @@ def export_selected_zip(items: list[LabelItem]) -> bytes:
 def export_selected_sheet_zip(items: list[LabelItem]) -> bytes:
     # 선택 라벨을 시트 1장(.ai + .png) ZIP으로 묶음.
     buffer = io.BytesIO()
-    pdf = render_sheet_pdf(items)
+    pdf = render_sheet_pdf(items, outline_text=True)
     png = pdf_to_png(pdf, dpi=300)
     with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as zf:
         zf.writestr("selected_sheet.ai", pdf)

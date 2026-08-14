@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import io
 import uuid
+from functools import lru_cache
 from pathlib import Path
 
 from fastapi import APIRouter, FastAPI, HTTPException, Query
@@ -149,6 +150,33 @@ def _next_slot(brand_id: str) -> tuple[int, int]:
             if (row, col) not in occupied:
                 return row, col
     raise HTTPException(status_code=400, detail="시트가 가득 찼습니다. (최대 200장)")
+
+
+def _slot_for_code(brand_id: str, code: str) -> tuple[int, int]:
+    # 브랜드·제품코드에 맞는 (row, col). 네일플라워/칼라디움은 번호 기반 배치.
+    sheet = _sheet(brand_id)
+    occupied = {(item.row, item.col) for item in sheet.values()}
+
+    catalog_map = {item.code: item for item in _catalogs.get(brand_id, []) if item.code}
+    cat = catalog_map.get(code)
+    if cat:
+        row, col = catalog_slot(brand_id, code, row=cat.row, col=cat.col)
+    elif brand_id in ("nailflower", "coloridium") and code.isdigit():
+        row, col = catalog_slot(brand_id, code, row=0, col=0)
+    else:
+        return _next_slot(brand_id)
+
+    if row >= SHEET_ROWS or col >= SHEET_COLS:
+        raise HTTPException(
+            status_code=400,
+            detail=f"코드 {code}에 해당하는 시트 위치가 범위를 벗어났습니다.",
+        )
+    if (row, col) in occupied:
+        raise HTTPException(
+            status_code=400,
+            detail=f"시트 {row + 1}행 {col + 1}열에 이미 라벨이 있습니다.",
+        )
+    return row, col
 
 
 def _sync_catalog_to_sheet(brand_id: str, *, replace: bool = False) -> int:
@@ -317,7 +345,7 @@ def add_label(payload: LabelCreateRequest, brand: str = Query(DEFAULT_BRAND_ID))
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
-    row, col = _next_slot(brand_id)
+    row, col = _slot_for_code(brand_id, code)
     item_id = uuid.uuid4().hex[:12]
     item = LabelItem(
         id=item_id,
@@ -349,6 +377,15 @@ def clear_labels(brand: str = Query(DEFAULT_BRAND_ID)) -> dict[str, str]:
     return {"status": "cleared"}
 
 
+@lru_cache(maxsize=512)
+def _cached_preview_png(code: str, name: str, barcode: str, brand: str, size: str) -> bytes:
+    if size == "large":
+        from label_engine import render_label_png
+
+        return render_label_png(code, name, barcode, dpi=300, brand=brand)
+    return render_preview_thumbnail(code, name, barcode, brand=brand)
+
+
 @api.get("/labels/{item_id}/preview")
 def label_preview(
     item_id: str,
@@ -359,13 +396,12 @@ def label_preview(
     item = _sheet(brand_id).get(item_id)
     if not item:
         raise HTTPException(status_code=404, detail="라벨을 찾을 수 없습니다.")
-    if size == "large":
-        from label_engine import render_label_png
-
-        png = render_label_png(item.code, item.name, item.barcode, dpi=300, brand=item.brand)
-    else:
-        png = render_preview_thumbnail(item.code, item.name, item.barcode, brand=item.brand)
-    return Response(content=png, media_type="image/png")
+    png = _cached_preview_png(item.code, item.name, item.barcode, item.brand, size)
+    return Response(
+        content=png,
+        media_type="image/png",
+        headers={"Cache-Control": "public, max-age=3600"},
+    )
 
 
 @api.post("/export")
