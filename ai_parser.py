@@ -1,4 +1,4 @@
-"""브랜드별 .ai / PNG 시트에서 라벨 항목 추출."""
+# 브랜드별 .ai / PNG 시트에서 라벨 항목 추출.
 
 from __future__ import annotations
 
@@ -19,6 +19,7 @@ from paths import get_data_dir
 
 
 def _cv2():
+    # OpenCV 지연 import — exe 빌드 시 OCR 미포함 가능.
     import cv2
 
     return cv2
@@ -59,18 +60,20 @@ class CatalogItem:
 
 
 def _ean13_check_digit(body12: str) -> int:
+    # EAN-13 체크디지it 계산.
     total = sum(int(d) * (1 if i % 2 == 0 else 3) for i, d in enumerate(body12))
     return (10 - (total % 10)) % 10
 
 
 def _is_valid_ean13(digits: str) -> bool:
+    # 13자리 EAN-13 유효성(체크디지it) 검사.
     if len(digits) != 13 or not digits.isdigit():
         return False
     return int(digits[12]) == _ean13_check_digit(digits[:12])
 
 
 def normalize_barcode(raw: str, *, prefixes: tuple[str, ...] = ("880921369", "880")) -> str:
-    """EAN-13 정규화 및 체크디지it 보정."""
+    # EAN-13 정규화 및 체크디지it 보정.
     digits = re.sub(r"\D", "", raw)
     if not digits:
         return ""
@@ -122,6 +125,7 @@ def normalize_barcode(raw: str, *, prefixes: tuple[str, ...] = ("880921369", "88
 
 
 def _fix_code_token(token: str) -> str:
+    # OCR 흔한 상품코드 오타 보정 (SOI→S01 등).
     result = token.upper().strip()
     for pattern, repl in _CODE_FIXES:
         result = pattern.sub(repl, result)
@@ -130,6 +134,7 @@ def _fix_code_token(token: str) -> str:
 
 
 def normalize_code(raw: str, brand: BrandConfig | None = None) -> str:
+    # 브랜드 code_pattern에 맞게 상품코드 추출·정규화.
     token = raw.strip().split()[0] if raw.strip() else ""
     token = _fix_code_token(token)
     pattern = brand.code_pattern if brand else CODE_RE
@@ -141,6 +146,7 @@ def normalize_code(raw: str, brand: BrandConfig | None = None) -> str:
 
 
 def normalize_name(raw: str, code: str) -> str:
+    # 상품명에서 코드·skip_words 제거 및 OCR 오타 보정.
     name = raw.strip()
     parts = name.split(maxsplit=1)
     if parts:
@@ -156,6 +162,7 @@ def normalize_name(raw: str, code: str) -> str:
 
 
 def _get_reader():
+    # EasyOCR Reader 싱글턴 (한·영). 미설치 시 ImportError.
     try:
         import easyocr
     except ImportError as exc:
@@ -168,6 +175,7 @@ def _get_reader():
 
 
 def _preprocess_header(crop: Image.Image, scale: int = 8) -> np.ndarray:
+    # 브랜드·상품명 영역 OCR 전처리 (확대·대비).
     cv2 = _cv2()
     enlarged = crop.resize((crop.width * scale, crop.height * scale), Image.Resampling.LANCZOS)
     gray = cv2.cvtColor(np.array(enlarged), cv2.COLOR_RGB2GRAY)
@@ -175,6 +183,7 @@ def _preprocess_header(crop: Image.Image, scale: int = 8) -> np.ndarray:
 
 
 def _preprocess_digits(crop: Image.Image, scale: int = 10) -> list[np.ndarray]:
+    # 바코드 숫자 OCR용 이진화 변형 목록.
     cv2 = _cv2()
     gray = cv2.GaussianBlur(gray, (3, 3), 0)
     variants: list[np.ndarray] = []
@@ -185,6 +194,7 @@ def _preprocess_digits(crop: Image.Image, scale: int = 10) -> list[np.ndarray]:
 
 
 def _extract_barcode_from_texts(texts: list[str], *, prefixes: tuple[str, ...]) -> str:
+    # OCR 텍스트 목록에서 EAN-13 후보 추출·우선순위 선택.
     joined = " ".join(texts)
     candidates: list[str] = []
 
@@ -229,6 +239,7 @@ def _extract_barcode_from_texts(texts: list[str], *, prefixes: tuple[str, ...]) 
 
 
 def _parse_label_crop(crop: Image.Image, reader, brand: BrandConfig) -> tuple[str, str, str]:
+    # 라벨 1칸 crop → (code, name, barcode) 추출.
     w, h = crop.size
 
     # 전체 셀 OCR (코드/명/바코드 통합 fallback)
@@ -266,7 +277,7 @@ def _parse_label_crop(crop: Image.Image, reader, brand: BrandConfig) -> tuple[st
 
 
 def _grid_bounds(height: int, rows: int, row: int) -> tuple[int, int]:
-    """누적 오차 없이 행 경계 계산 (4987/20 = 249.35px)."""
+    # PNG 시트 행 Y 경계 (누적 반올림 오차 방지).
     y0 = round(row * height / rows)
     y1 = round((row + 1) * height / rows)
     return y0, y1
@@ -278,7 +289,7 @@ def extract_from_png(
     cols: int = 10,
     rows: int = 20,
 ) -> list[CatalogItem]:
-    """PNG 시트에서 OCR로 항목 추출."""
+    # PNG 시트에서 OCR로 항목 추출.
     png_path = Path(png_path)
     if not png_path.exists():
         raise FileNotFoundError(f"PNG 파일을 찾을 수 없습니다: {png_path}")
@@ -321,7 +332,7 @@ def extract_from_png(
 
 
 def extract_from_ai(brand_id: str = DEFAULT_BRAND_ID) -> list[CatalogItem]:
-    """AI/PDF 파일을 PNG로 렌더링 후 추출. PNG가 있으면 PNG 우선."""
+    # AI/PDF 파일을 PNG로 렌더링 후 추출. PNG가 있으면 PNG 우선.
     brand = get_brand(brand_id)
     ai_path = brand.ai_path
     png_path = brand.png_path
@@ -345,6 +356,7 @@ def extract_from_ai(brand_id: str = DEFAULT_BRAND_ID) -> list[CatalogItem]:
 
 
 def _apply_brand_slot(item: CatalogItem) -> CatalogItem:
+    # 칼라디움·네일플라워 등 브랜드별 (row,col) 규칙 적용.
     row, col = catalog_slot(item.brand, item.code, row=item.row, col=item.col)
     if row == item.row and col == item.col:
         return item
@@ -360,6 +372,7 @@ def _apply_brand_slot(item: CatalogItem) -> CatalogItem:
 
 
 def load_catalog(brand_id: str = DEFAULT_BRAND_ID) -> list[CatalogItem]:
+    # data/catalog_*.json 로드 및 브랜드 슬롯 보정.
     brand = get_brand(brand_id)
     cache_path = brand.catalog_path
     if not cache_path.exists():
@@ -374,6 +387,7 @@ def load_catalog(brand_id: str = DEFAULT_BRAND_ID) -> list[CatalogItem]:
 
 
 def save_catalog(items: list[CatalogItem], brand_id: str = DEFAULT_BRAND_ID) -> None:
+    # 카탈로그 항목을 JSON 파일로 저장.
     brand = get_brand(brand_id)
     cache_path = brand.catalog_path
     cache_path.parent.mkdir(parents=True, exist_ok=True)
@@ -396,7 +410,7 @@ def apply_verified_barcodes(
     items: list[CatalogItem],
     brand: BrandConfig,
 ) -> list[CatalogItem]:
-    """PNG OCR 바코드와 EAN-13 검증값이 일치하면 정규화된 EAN-13을 적용."""
+    # PNG OCR 바코드와 EAN-13 검증값이 일치하면 정규화된 EAN-13을 적용.
     from label_engine import barcode_pattern_matches_png, validate_barcode
 
     png_path = brand.png_path
@@ -459,6 +473,7 @@ def apply_verified_barcodes(
 
 
 def refresh_catalog(brand_id: str = DEFAULT_BRAND_ID) -> list[CatalogItem]:
+    # AI/PNG OCR 재추출 → 검증 → JSON 저장 → 목록 반환.
     brand = get_brand(brand_id)
     items = extract_from_ai(brand_id)
     items = apply_verified_barcodes(items, brand)

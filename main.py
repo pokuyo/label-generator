@@ -1,4 +1,4 @@
-"""Windows exe / CLI 진입점."""
+# Windows exe / CLI 진입점.
 
 from __future__ import annotations
 
@@ -9,6 +9,7 @@ import webbrowser
 
 
 def main() -> None:
+    # uvicorn 서버 기동 및 브라우저 자동 열기.
     parser = argparse.ArgumentParser(description="라벨 생성기")
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8765)

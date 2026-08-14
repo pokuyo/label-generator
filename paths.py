@@ -1,4 +1,4 @@
-"""실행 경로 — 개발 / PyInstaller 빌드(exe) 공통."""
+# 실행 경로 — 개발 / PyInstaller 빌드(exe) 공통.
 
 from __future__ import annotations
 
@@ -8,25 +8,26 @@ from pathlib import Path
 
 
 def is_frozen() -> bool:
+    # PyInstaller exe로 실행 중인지 여부.
     return getattr(sys, "frozen", False)
 
 
 def get_app_dir() -> Path:
-    """exe 또는 프로젝트 루트 (설정·데이터 저장 위치)."""
+    # exe 또는 프로젝트 루트 (설정·데이터 저장 위치).
     if is_frozen():
         return Path(sys.executable).resolve().parent
     return Path(__file__).resolve().parent
 
 
 def get_bundle_dir() -> Path:
-    """읽기 전용 리소스 (static, fonts, 내장 catalog)."""
+    # 읽기 전용 리소스 (static, fonts, 내장 catalog).
     if is_frozen():
         return Path(sys._MEIPASS)  # type: ignore[attr-defined]
     return get_app_dir()
 
 
 def get_data_dir() -> Path:
-    """카탈로그 JSON 등 — exe 옆 data/ (최초 실행 시 번들에서 복사)."""
+    # 카탈로그 JSON 등 — exe 옆 data/ (최초 실행 시 번들에서 복사).
     data = get_app_dir() / "data"
     data.mkdir(parents=True, exist_ok=True)
     if is_frozen():
@@ -40,15 +41,17 @@ def get_data_dir() -> Path:
 
 
 def get_static_dir() -> Path:
+    # 웹 UI 정적 파일(static/) 경로.
     return get_bundle_dir() / "static"
 
 
 def get_font_dir() -> Path:
+    # Noto CJK 폰트 파일(fonts/) 경로.
     return get_bundle_dir() / "fonts"
 
 
 def get_label_root() -> Path:
-    """브랜드 .ai / .png — exe 옆 assets/ 우선, 없으면 개발용 상위 폴더."""
+    # 브랜드 .ai / .png — exe 옆 assets/ 우선, 없으면 개발용 상위 폴더.
     app = get_app_dir()
     assets = app / "assets"
     if assets.is_dir():

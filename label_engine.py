@@ -1,4 +1,4 @@
-"""라벨 PDF(.ai) 및 PNG 생성 엔진."""
+# 라벨 PDF(.ai) 및 PNG 생성 엔진.
 
 from __future__ import annotations
 
@@ -61,7 +61,7 @@ FOOTER_LINES = (
 
 @dataclass(frozen=True)
 class BrandLayout:
-    """브랜드별 라벨 프레임·요소 배치 (원본 PNG/AI 측정)."""
+    # 브랜드별 라벨 프레임·요소 배치 (원본 PNG/AI 측정).
 
     shape: str  # "rect" | "circle"
     frame_px: float
@@ -132,7 +132,7 @@ _NAILFLOWER_Y = {
 
 
 def _circle_chord_width(frame: pymupdf.Rect, y: float, *, pad: float = 3.0) -> float:
-    """원형 프레임에서 y 높이의 최대 가로 폭(현)."""
+    # 원형 프레임에서 y 높이의 최대 가로 폭(현).
     r = frame.width / 2
     cy = (frame.y0 + frame.y1) / 2
     dy = abs(y - cy)
@@ -142,6 +142,7 @@ def _circle_chord_width(frame: pymupdf.Rect, y: float, *, pad: float = 3.0) -> f
 
 
 def _inner_rect(frame: pymupdf.Rect) -> pymupdf.Rect:
+    # 테두리 안쪽 텍스트·바코드 배치 영역 (여백 제외).
     return pymupdf.Rect(
         frame.x0 + FRAME_TEXT_PAD,
         frame.y0 + FRAME_TEXT_PAD,
@@ -151,10 +152,12 @@ def _inner_rect(frame: pymupdf.Rect) -> pymupdf.Rect:
 
 
 def _layout_for(brand: str) -> BrandLayout:
+    # 브랜드별 프레임 형태·요소 Y 비율. 미등록 브랜드는 섹시밤(사각) 레이아웃.
     return _BRAND_LAYOUTS.get(brand, _DEFAULT_LAYOUT)
 
 
 def _frame_size_pt(layout: BrandLayout) -> float:
+    # 원본 PNG 픽셀 비율 → PDF 포인트로 환산한 프레임(테두리) 한 변 길이.
     return LABEL_W_PT * (layout.frame_px / layout.cell_px_w)
 
 
@@ -165,6 +168,7 @@ def _label_frame(
     standalone: bool,
     layout: BrandLayout,
 ) -> tuple[pymupdf.Rect, float]:
+    # 시트 셀 또는 단일 export 기준 (x,y)에 프레임 사각형·크기(s) 반환.
     s = _frame_size_pt(layout)
     if standalone:
         lx = x
@@ -176,6 +180,7 @@ def _label_frame(
 
 
 def _draw_label_border(page: pymupdf.Page, frame: pymupdf.Rect, layout: BrandLayout) -> None:
+    # 브랜드별 테두리 — 원형(circle) 또는 둥근 사각형(rect).
     if layout.shape == "circle":
         center = pymupdf.Point((frame.x0 + frame.x1) / 2, (frame.y0 + frame.y1) / 2)
         page.draw_circle(center, frame.width / 2, color=BLACK, width=BORDER_WIDTH_PT)
@@ -185,6 +190,7 @@ def _draw_label_border(page: pymupdf.Page, frame: pymupdf.Rect, layout: BrandLay
 
 
 def _export_size(layout: BrandLayout) -> float:
+    # 개별 라벨 PDF/PNG 한 페이지 크기 (프레임 + 여백).
     return _frame_size_pt(layout) + 2 * LABEL_EXPORT_MARGIN
 
 
@@ -200,7 +206,7 @@ class LabelItem:
 
 
 def validate_barcode(value: str) -> str:
-    """EAN-13 식별번호 검증 및 정규화."""
+    # EAN-13 식별번호 검증 및 정규화.
     digits = re.sub(r"\D", "", value.strip())
     if len(digits) != 13:
         raise ValueError("식별번호는 13자리 EAN-13이어야 합니다.")
@@ -216,6 +222,7 @@ def validate_barcode(value: str) -> str:
 
 
 def validate_code(value: str) -> str:
+    # 상품코드 공백 제거·대문자화 및 형식 검증.
     code = value.strip().upper()
     if not code:
         raise ValueError("상품코드를 입력해 주세요.")
@@ -225,6 +232,7 @@ def validate_code(value: str) -> str:
 
 
 def validate_name(value: str) -> str:
+    # 상품명 공백 제거 및 길이(30자) 검증.
     name = value.strip()
     if not name:
         raise ValueError("상품명을 입력해 주세요.")
@@ -234,11 +242,12 @@ def validate_name(value: str) -> str:
 
 
 def format_barcode_text(value: str) -> str:
+    # EAN-13을 'X XXXXXX XXXXXX' 표시 형식으로 변환.
     return f"{value[0]} {value[1:7]} {value[7:13]}"
 
 
 def _barcode_run_pattern(gray_image: Image.Image) -> list[tuple[int, int]]:
-    """바코드 이미지 중앙 행 run-length 패턴 (0=흰, 1=검)."""
+    # 바코드 이미지 중앙 행 run-length 패턴 (0=흰, 1=검).
     row = np.array(gray_image.convert("L"))[gray_image.height // 2]
     binary = (row < 128).astype(int)
     runs: list[tuple[int, int]] = []
@@ -258,14 +267,14 @@ def _barcode_run_pattern(gray_image: Image.Image) -> list[tuple[int, int]]:
 
 
 def _ean13_module_pattern(ean13: str) -> str:
-    """EAN-13 가드 바 포함 모듈 패턴 (0=흰, 1=데이터, G=가드)."""
+    # EAN-13 가드 바 포함 모듈 패턴 (0=흰, 1=데이터, G=가드).
     from barcode.ean import EAN13_GUARD
 
     return EAN13_GUARD(ean13).build()[0]
 
 
 def _packed_barcode_modules(code_line: str) -> list[tuple[int, bool, bool]]:
-    """(연속 모듈 수, 검정 여부, 가드 바 여부)."""
+    # (연속 모듈 수, 검정 여부, 가드 바 여부).
     line = code_line + " "
     modules: list[tuple[int, bool, bool]] = []
     run = 1
@@ -285,14 +294,14 @@ def _packed_barcode_modules(code_line: str) -> list[tuple[int, bool, bool]]:
 
 
 def _barcode_data_height(total_height: float) -> float:
-    """데이터 막대 높이 — 가드 연장 비율 반영."""
+    # 데이터 막대 높이 — 가드 연장 비율 반영.
     d = BARCODE_DATA_HEIGHT_R
     s = BARCODE_GUARD_EXTEND_SCALE
     return total_height * d / (d + (1 - d) * s)
 
 
 def _draw_barcode_vector(page: pymupdf.Page, rect: pymupdf.Rect, ean13: str) -> None:
-    """EAN-13 바코드를 벡터 막대로 그림 — 가드/데이터 동일 두께."""
+    # EAN-13 바코드를 벡터 막대로 그림 — 가드/데이터 동일 두께.
     modules = _packed_barcode_modules(_ean13_module_pattern(ean13))
     total = sum(count for count, _, _ in modules)
     if total <= 0 or rect.width <= 0 or rect.height <= 0:
@@ -314,7 +323,7 @@ def _draw_barcode_vector(page: pymupdf.Page, rect: pymupdf.Rect, ean13: str) -> 
 
 
 def _render_barcode_array(width_px: int, height_px: int, ean13: str) -> np.ndarray:
-    """벡터와 동일 규칙으로 바코드 비트맵 생성 (패턴 검증·PNG용)."""
+    # 벡터와 동일 규칙으로 바코드 비트맵 생성 (패턴 검증·PNG용).
     modules = _packed_barcode_modules(_ean13_module_pattern(ean13))
     total = sum(count for count, _, _ in modules)
     arr = np.full((max(1, height_px), max(1, width_px)), 255, dtype=np.uint8)
@@ -334,6 +343,7 @@ def _render_barcode_array(width_px: int, height_px: int, ean13: str) -> np.ndarr
 
 
 def _make_barcode_image(ean13: str, width_px: int, height_px: int) -> bytes:
+    # 바코드 비트맵 PNG bytes (OCR 패턴 검증용).
     arr = _render_barcode_array(width_px, height_px, ean13)
     img = Image.fromarray(arr).convert("RGB")
     out = io.BytesIO()
@@ -342,6 +352,7 @@ def _make_barcode_image(ean13: str, width_px: int, height_px: int) -> bytes:
 
 
 def _png_grid_bounds(height: int, rows: int, row: int) -> tuple[int, int]:
+    # PNG 시트 행 경계 (누적 반올림 오차 방지).
     y0 = round(row * height / rows)
     y1 = round((row + 1) * height / rows)
     return y0, y1
@@ -354,7 +365,7 @@ def _extract_png_barcode_crop(
     cols: int = SHEET_COLS,
     rows: int = SHEET_ROWS,
 ) -> Image.Image | None:
-    """원본 PNG에서 바코드 막대 영역 crop."""
+    # 원본 PNG에서 바코드 막대 영역 crop.
     png_path = Path(png_path)
     if not png_path.exists():
         return None
@@ -375,7 +386,7 @@ def barcode_pattern_matches_png(
     row: int,
     col: int,
 ) -> bool:
-    """PNG 바코드 막대 패턴과 EAN-13 생성 패턴이 동일한지 검증."""
+    # PNG 바코드 막대 패턴과 EAN-13 생성 패턴이 동일한지 검증.
     crop = _extract_png_barcode_crop(png_path, row, col)
     if crop is None:
         return False
@@ -402,6 +413,7 @@ FONT_BOLD_OBJ = pymupdf.Font(fontfile=str(FONT_BOLD))
 
 
 def _text_width(text: str, font: pymupdf.Font, fontsize: float) -> float:
+    # 주어진 폰트·크기에서 텍스트 가로 폭(pt).
     return font.text_length(text, fontsize=fontsize)
 
 
@@ -412,6 +424,7 @@ def _fit_font_size(
     min_size: float,
     max_width: float,
 ) -> float:
+    # max_width 안에 들어가도록 폰트 크기를 줄임.
     size = max_size
     while size > min_size and _text_width(text, font, size) > max_width:
         size -= 0.2
@@ -419,6 +432,7 @@ def _fit_font_size(
 
 
 def _insert_text(page: pymupdf.Page, point: pymupdf.Point, text: str, font: pymupdf.Font, fontsize: float) -> None:
+    # PDF 페이지에 단일 텍스트 span 삽입.
     tw = pymupdf.TextWriter(page.rect, color=BLACK)
     tw.append(point, text, font=font, fontsize=fontsize)
     tw.write_text(page)
@@ -435,7 +449,7 @@ def _insert_text_baseline(
     min_size: float = 2.0,
     max_width: float | None = None,
 ) -> float:
-    """baseline 기준 텍스트 — bbox 하단 y 반환."""
+    # baseline 기준 텍스트 — bbox 하단 y 반환.
     inner = _inner_rect(frame)
     width = min(max_width, inner.width) if max_width is not None else inner.width
     size = _fit_font_size(text, font, fontsize, min_size, width)
@@ -459,7 +473,7 @@ def _insert_line_at_top_ratio(
     circle: bool = False,
     max_bottom_ratio: float | None = None,
 ) -> float:
-    """프레임 top 비율 위치에 한 줄 텍스트 배치. circle=True면 원형 chord 폭 제한."""
+    # 프레임 top 비율 위치에 한 줄 텍스트 배치. circle=True면 원형 chord 폭 제한.
     top_y = frame.y0 + frame.height * top_ratio
     inner = _inner_rect(frame)
     est_baseline = top_y + _text_ascent_for_top(fontsize)
@@ -505,11 +519,12 @@ def _insert_line_at_top_ratio(
 
 
 def _text_ascent(size: float) -> float:
+    # baseline → ascent 높이 (바코드 숫자 baseline 계산용).
     return size * (1.16 if size >= 4.0 else 1.0)
 
 
 def _text_ascent_for_top(size: float) -> float:
-    """텍스트 상단을 inner.y0 에 맞출 때 baseline 오프셋."""
+    # 텍스트 상단을 inner.y0 에 맞출 때 baseline 오프셋.
     return size * 1.16
 
 
@@ -524,7 +539,7 @@ def _insert_at_top_ratio(
     min_size: float = 2.0,
     max_bottom_ratio: float | None = None,
 ) -> float:
-    """원본 bbox top 비율에 맞춰 텍스트 배치."""
+    # 원본 bbox top 비율에 맞춰 텍스트 배치.
     inner = pymupdf.Rect(
         frame.x0 + FRAME_TEXT_PAD,
         frame.y0 + FRAME_TEXT_PAD,
@@ -550,7 +565,7 @@ def _insert_at_top_ratio(
 
 
 def _find_text_bottom(page: pymupdf.Page, *needles: str) -> float:
-    """페이지에서 needle 텍스트 span의 최대 하단 y (블록 병합에도 동작)."""
+    # 페이지에서 needle 텍스트 span의 최대 하단 y (블록 병합에도 동작).
     bottom = 0.0
     found = False
     for block in page.get_text("dict")["blocks"]:
@@ -580,7 +595,7 @@ def _draw_nailflower_label(
     name: str,
     ean13: str,
 ) -> None:
-    """네일플라워 원형 라벨 — 줄바꿈·원형 chord 폭 제한."""
+    # 네일플라워 원형 라벨 — 줄바꿈·원형 chord 폭 제한.
     y = _NAILFLOWER_Y
     _insert_line_at_top_ratio(
         page, frame, y["brand1"], _NAILFLOWER_BRAND_LINES[0], FONT_LIGHT_OBJ, FONT_BRAND, min_size=2.5, circle=True
@@ -659,7 +674,7 @@ def draw_label(
     standalone: bool = False,
     brand: str = DEFAULT_BRAND_ID,
 ) -> None:
-    """단일 라벨을 PDF 페이지에 그립니다. (x, y = 배치 기준 좌상단)"""
+    # 단일 라벨을 PDF 페이지에 그립니다. (x, y = 배치 기준 좌상단)
     brand_text = get_brand(brand).brand_text
     layout = _layout_for(brand)
     frame, s = _label_frame(x, y, standalone=standalone, layout=layout)
@@ -746,6 +761,7 @@ def _new_page(size: tuple[float, float]) -> tuple[pymupdf.Document, pymupdf.Page
 
 
 def render_label_pdf(code: str, name: str, ean13: str, *, brand: str = DEFAULT_BRAND_ID) -> bytes:
+    # 단일 라벨 PDF bytes (.ai 호환).
     layout = _layout_for(brand)
     export_size = _export_size(layout)
     doc, page = _new_page((export_size, export_size))
@@ -756,6 +772,7 @@ def render_label_pdf(code: str, name: str, ean13: str, *, brand: str = DEFAULT_B
 
 
 def render_sheet_pdf(items: list[LabelItem]) -> bytes:
+    # 선택 라벨을 10×20 시트 PDF로 렌더.
     doc, page = _new_page((SHEET_W_PT, SHEET_H_PT))
     for item in items:
         x = item.col * LABEL_W_PT
@@ -767,6 +784,7 @@ def render_sheet_pdf(items: list[LabelItem]) -> bytes:
 
 
 def pdf_to_png(pdf_bytes: bytes, dpi: int = 300) -> bytes:
+    # PDF 1페이지 → PNG bytes 변환.
     doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
     page = doc[0]
     zoom = dpi / 72
@@ -777,10 +795,12 @@ def pdf_to_png(pdf_bytes: bytes, dpi: int = 300) -> bytes:
 
 
 def render_label_png(code: str, name: str, ean13: str, dpi: int = 300, *, brand: str = DEFAULT_BRAND_ID) -> bytes:
+    # 단일 라벨 PNG bytes.
     return pdf_to_png(render_label_pdf(code, name, ean13, brand=brand), dpi=dpi)
 
 
 def render_preview_thumbnail(code: str, name: str, ean13: str, *, brand: str = DEFAULT_BRAND_ID) -> bytes:
+    # 웹 UI 썸네일용 작은 PNG (~120px).
     png = render_label_png(code, name, ean13, dpi=150, brand=brand)
     img = Image.open(io.BytesIO(png))
     img = img.resize((120, int(120 * img.height / img.width)), Image.Resampling.LANCZOS)
@@ -794,6 +814,7 @@ def render_sheet_preview_png(items: list[LabelItem], dpi: int = 120) -> bytes:
 
 
 def export_selected_zip(items: list[LabelItem]) -> bytes:
+    # 선택 라벨을 개별 .ai + .png ZIP으로 묶음.
     buffer = io.BytesIO()
     with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as zf:
         for item in items:
@@ -807,6 +828,7 @@ def export_selected_zip(items: list[LabelItem]) -> bytes:
 
 
 def export_selected_sheet_zip(items: list[LabelItem]) -> bytes:
+    # 선택 라벨을 시트 1장(.ai + .png) ZIP으로 묶음.
     buffer = io.BytesIO()
     pdf = render_sheet_pdf(items)
     png = pdf_to_png(pdf, dpi=300)

@@ -1,4 +1,4 @@
-"""브랜드(카테고리)별 AI/PNG·라벨 문구 설정."""
+# 브랜드(카테고리)별 AI/PNG·라벨 문구 설정.
 
 from __future__ import annotations
 
@@ -92,7 +92,7 @@ _COLORIDIUM_ROW_BY_TAG: dict[int, int] = {
 
 
 def coloridium_slot(code: str) -> tuple[int, int]:
-    """3자리 제품번호 → (row, col). col은 0~9, row는 시리즈 블록."""
+    # 3자리 제품번호 → (row, col). col은 0~9, row는 시리즈 블록.
     n = int(code)
     if n < 0 or n > 999:
         raise ValueError(f"칼라디움 코드는 000~999 범위여야 합니다: {code}")
@@ -144,7 +144,7 @@ _NAILFLOWER_ROW_BY_TAG: dict[int, int] = {
 
 
 def nailflower_slot(code: str) -> tuple[int, int]:
-    """제품번호 → (row, col). col은 0~9, row는 시리즈 블록."""
+    # 제품번호 → (row, col). col은 0~9, row는 시리즈 블록.
     n = int(code)
     if n < 0 or n > 999:
         raise ValueError(f"네일플라워 코드는 00~999 범위여야 합니다: {code}")
@@ -169,7 +169,7 @@ def nailflower_slot(code: str) -> tuple[int, int]:
 
 
 def catalog_slot(brand_id: str, code: str, *, row: int, col: int) -> tuple[int, int]:
-    """브랜드별 카탈로그 항목의 시트 (row, col) 좌표."""
+    # 브랜드별 카탈로그 항목의 시트 (row, col) 좌표.
     if brand_id == "coloridium" and code.isdigit():
         return coloridium_slot(code)
     if brand_id == "nailflower" and code.isdigit():
@@ -178,6 +178,7 @@ def catalog_slot(brand_id: str, code: str, *, row: int, col: int) -> tuple[int, 
 
 
 def get_brand(brand_id: str) -> BrandConfig:
+    # 브랜드 ID로 설정 조회. 없으면 KeyError.
     key = (brand_id or DEFAULT_BRAND_ID).strip().lower()
     if key not in BRANDS:
         raise KeyError(f"Unknown brand: {brand_id}")
@@ -185,4 +186,5 @@ def get_brand(brand_id: str) -> BrandConfig:
 
 
 def list_brands() -> list[BrandConfig]:
+    # 등록된 전체 브랜드 목록.
     return list(BRANDS.values())

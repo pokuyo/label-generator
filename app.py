@@ -1,4 +1,4 @@
-"""라벨 생성 웹 UI 서버."""
+# 라벨 생성 웹 UI 서버.
 
 from __future__ import annotations
 
@@ -89,6 +89,7 @@ class ImportCatalogRequest(BaseModel):
 
 
 def _resolve_brand(brand: str | None) -> str:
+    # API brand 쿼리 → 유효 brand_id. 없으면 HTTP 400.
     try:
         return get_brand(brand or DEFAULT_BRAND_ID).id
     except KeyError as exc:
@@ -96,10 +97,12 @@ def _resolve_brand(brand: str | None) -> str:
 
 
 def _sheet(brand_id: str) -> dict[str, LabelItem]:
+    # 브랜드별 in-memory 시트 (label_id → LabelItem).
     return _sheets[brand_id]
 
 
 def _is_valid_catalog_item(item: CatalogItem) -> bool:
+    # 코드·EAN-13 바코드가 모두 유효한 카탈로그 항목인지.
     if not item.code or len(item.barcode) != 13:
         return False
     try:
@@ -110,6 +113,7 @@ def _is_valid_catalog_item(item: CatalogItem) -> bool:
 
 
 def _to_response(item: LabelItem, selected: bool = False) -> LabelResponse:
+    # LabelItem → API 응답 DTO.
     return LabelResponse(
         id=item.id,
         code=item.code,
@@ -123,6 +127,7 @@ def _to_response(item: LabelItem, selected: bool = False) -> LabelResponse:
 
 
 def _catalog_to_response(item: CatalogItem) -> CatalogResponse:
+    # CatalogItem → API 응답 DTO (valid 플래그 포함).
     return CatalogResponse(
         code=item.code,
         name=item.name,
@@ -136,6 +141,7 @@ def _catalog_to_response(item: CatalogItem) -> CatalogResponse:
 
 
 def _next_slot(brand_id: str) -> tuple[int, int]:
+    # 시트에서 비어 있는 다음 (row, col) — 좌→우, 위→아래.
     sheet = _sheet(brand_id)
     occupied = {(item.row, item.col) for item in sheet.values()}
     for row in range(SHEET_ROWS):
@@ -146,7 +152,7 @@ def _next_slot(brand_id: str) -> tuple[int, int]:
 
 
 def _sync_catalog_to_sheet(brand_id: str, *, replace: bool = False) -> int:
-    """카탈로그의 유효 항목을 AI 원본 row/col 위치에 시트에 배치."""
+    # 카탈로그의 유효 항목을 AI 원본 row/col 위치에 시트에 배치.
     sheet = _sheet(brand_id)
     catalog = _catalogs.get(brand_id, [])
 
@@ -394,6 +400,7 @@ app.include_router(api)
 
 @app.on_event("startup")
 def startup_load() -> None:
+    # 서버 기동 시 카탈로그 JSON 로드 및 시트 초기 배치.
     global _catalogs
     for brand in list_brands():
         if brand.catalog_path.exists():
